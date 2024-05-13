@@ -28,6 +28,27 @@ terminator.SendSignal();
 
 The default process is current process. When sending signal without specifying any process, the signal will be sent to all child processes of current process.
 
+```csharp
+// 
+// Send terminate signal to named processes:
+// 
+
+SignalProcess terminator = new SignalProcess();
+terminator.SendSignal(Process.GetProcessesByName("myapp.exe"));
+```
+
+This will send default signal (terminate) to all processes named myapp.exe. There's also static functions that accives the same result:
+
+```csharp
+// 
+// Send terminate signal to named processes:
+// 
+
+SignalProcess.SendSignal("myapp.exe", SignalType.Default);
+```
+
+
+
 ## Use case
 
 Suppose you have a cross-platform program with signal handlers running cleanup code on terminate. On Windows, killing the process won't work because the process is immediate terminated. This assembly provides methods for stopping running processes allowing their signal handlers to run.
