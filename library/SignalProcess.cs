@@ -29,7 +29,7 @@ namespace Xertified.ProcessTerminator
     {
         Terminate = 0,
         Interrupt = 1,
-        Break = 1,
+        Break = Interrupt,
         Close = 2,
         Logoff = 5,
         Shutdown = 6,
@@ -63,6 +63,9 @@ namespace Xertified.ProcessTerminator
         [return: MarshalAs(UnmanagedType.Bool)]
         private static extern bool GenerateConsoleCtrlEvent(SignalType dwCtrlEvent, uint dwProcessGroupId);
 
+        public SignalType Signal { get; set; }
+        public Process Process { get; set; }
+
         public SignalProcess()
         {
             Process = Process.GetCurrentProcess();
@@ -87,9 +90,6 @@ namespace Xertified.ProcessTerminator
             Signal = signal;
         }
 
-        public SignalType Signal { get; set; }
-        public Process Process { get; set; }
-
         public void SendInterrupt()
         {
             SendInterrupt(Process);
@@ -102,17 +102,17 @@ namespace Xertified.ProcessTerminator
 
         public void SendInterrupt(Process process)
         {
-            SendSignal(process, SignalType.Terminate);
+            SendSignal(process, SignalType.Interrupt);
         }
 
         public void SendInterrupt(Process[] processes)
         {
-            SendSignal(processes, SignalType.Terminate);
+            SendSignal(processes, SignalType.Interrupt);
         }
 
         public void SendInterrupt(string process)
         {
-            SendSignal(process, SignalType.Terminate);
+            SendSignal(process, SignalType.Interrupt);
         }
 
         public void SendTerminate()
